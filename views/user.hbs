@@ -1,0 +1,18 @@
+<h2>Users</h2>
+
+<div>
+  <a href="/user/new">Criar novo usuário</a>
+</div>
+<div>
+  <ul>
+    {{#each users}}
+        <li>{{this.username}}</li>
+        <li>{{this.name}}</li>
+        <li>{{this.profileImg}}</li>
+        <li>{{this.description}}</li>
+        <li>{{this.facebookId}}</li>
+        <li>{{this.role}}</li>
+      </a>
+    {{/each}}
+  </ul>
+</div>

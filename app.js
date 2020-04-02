@@ -8,6 +8,15 @@ const hbs = require('hbs');
 const mongoose = require('mongoose');
 const logger = require('morgan');
 const path = require('path');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const flash = require('connect-flash');
+const User = require('./models/User.model');
+
+
+const userRoutes = require('./routes/user.Routes');
 
 mongoose
   .connect('mongodb://localhost/passport-roles', {
@@ -39,9 +48,58 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // default value for title local
 app.locals.title = 'Express - Generated with IronGenerator';
 
+
+  app.use(
+    session({
+      secret: 'our-passport-local-strategy-app',
+      resave: true,
+      saveUninitialized: true
+    })
+  );
+
+  app.use(flash());
+
+  passport.serializeUser((user, callback) => {
+    callback(null, user._id);
+  });
+  
+  passport.deserializeUser((id, callback) => {
+    User.findById(id)
+      .then(user => {
+        callback(null, user);
+      })
+      .catch(error => {
+        callback(error);
+      });
+  });
+  
+  passport.use(
+    new LocalStrategy((username, password, callback) => {
+      User.findOne({ username })
+        .then(user => {
+          if (!user) {
+            return callback(null, false, { message: 'Incorrect username' });
+          }
+          if (!bcrypt.compareSync(password, user.password)) {
+            return callback(null, false, { message: 'Incorrect password' });
+          }
+          callback(null, user);
+        })
+        .catch(error => {
+          callback(error);
+        });
+    })
+  );
+  
+  app.use(passport.initialize());
+  app.use(passport.session());
+
 const index = require('./routes/index.routes');
 app.use('/', index);
 const authRoutes = require('./routes/auth.routes');
 app.use('/', authRoutes);
+
+app.use('/user', userRoutes);
+
 
 module.exports = app;
