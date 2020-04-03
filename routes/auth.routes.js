@@ -12,7 +12,7 @@ router.get('/login', (req, res) => {
   router.post(
     '/login',
     passport.authenticate('local', {
-      successRedirect: '/',
+      successRedirect: '/user',
       failureRedirect: '/login',
       failureFlash: true,
       passReqToCallback: true
@@ -21,7 +21,7 @@ router.get('/login', (req, res) => {
   
   router.get('/logout', (req, res) => {
     req.logout();
-    res.redirect('/auth/login');
+    res.redirect('/login');
   })
 
 module.exports = router;

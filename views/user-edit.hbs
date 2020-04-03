@@ -1,0 +1,11 @@
+<div>
+  <form action="/user/edit/{{user._id}}" method="POST">
+    <input type="text" name="username" value="{{user.username}}" placeholder="Username" disabled>
+    <input type="text" name="name" value="{{user.name}}" placeholder="Nome">
+    <input type="text" name="profileImg" value="{{user.profileImg}}" placeholder="Imagem Perfil">
+    <input type="text" name="description" value="{{user.description}}" placeholder="Descrição">
+    <input type="text" name="facebookId" value="{{user.facebookId}}" placeholder="Facebook">
+
+    <button type="submit">Editar Usuário</button>
+  </form>
+</div>

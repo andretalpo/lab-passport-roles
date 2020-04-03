@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User.model');
+const bcrypt = require('bcrypt');
+
 
 const DB_NAME = 'passport-roles';
 
@@ -9,11 +11,16 @@ mongoose.connect(`mongodb://localhost/${DB_NAME}`, {
   useUnifiedTopology: true
 });
 
+const password = '12345';
+const saltRouds = 10;
+const salt = bcrypt.genSaltSync(saltRouds);
+hashPassword = bcrypt.hashSync(password, salt);
+
 const user = [
   {
-    username: 'Admin',
-    name: 'Admin',
-    password: '12345',
+    username: 'Boss',
+    name: 'Boss Ironhack',
+    password: hashPassword,
     role: 'BOSS'
   },
 ];
