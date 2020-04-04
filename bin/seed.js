@@ -18,10 +18,10 @@ hashPassword = bcrypt.hashSync(password, salt);
 
 const user = [
   {
-    username: 'Boss',
-    name: 'Boss Ironhack',
+    username: 'Alumni',
+    name: 'Teste Alumni',
     password: hashPassword,
-    role: 'BOSS'
+    role: 'STUDENT'
   },
 ];
 

@@ -7,6 +7,17 @@ const User = require('../models/User.model');
 // add routes here
 router.get('/', (req, res, next) => {
 
+  if(req.user.role === 'STUDENT'){
+    User.find( {role: 'STUDENT'} )
+    .then(users => {
+      res.render('user', { users });
+      return;
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+  }
+
     User.find()
       .then(users => {
         res.render('user', { users });

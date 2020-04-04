@@ -68,7 +68,9 @@ app.locals.title = 'Ironhack Bureau Investigation';
     callbackURL: "/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
-    return cb(null, profile);
+    User.findOrCreate({ facebookId: profile.id, username: `facebookUser${profile.id}`, name: profile.displayName, role: 'STUDENT' }, function (err, user) {
+      return cb(err, user);
+    });
   }
 ));
 
@@ -86,7 +88,7 @@ app.locals.title = 'Ironhack Bureau Investigation';
   
   passport.deserializeUser((id, callback) => {
     console.log(id);
-    
+
     User.findById(id._id)
       .then(user => {
         callback(null, user);
@@ -124,7 +126,7 @@ app.locals.title = 'Ironhack Bureau Investigation';
   app.get('/auth/facebook/callback', 
   passport.authenticate('facebook', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/user');
   });
 
 
